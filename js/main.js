@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Handle navigation clicks
   setupNavigation();
+
+  setupMobileNavigation()
 });
 
 // Get current page name from URL
@@ -430,4 +432,73 @@ function setupNavigation() {
     setActiveNavLink();
     loadContent();
   });
+}
+
+// Set up mobile navigation functionality
+function setupMobileNavigation() {
+  // Create the navigation toggle button
+  const navToggle = document.createElement('button');
+  navToggle.className = 'navbar-toggle';
+  navToggle.setAttribute('aria-label', 'Toggle navigation menu');
+  
+  // Create hamburger and close icons
+  const hamburgerIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="menu-icon">
+      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+    </svg>
+  `;
+  
+  const closeIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="close-icon" style="display: none;">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    </svg>
+  `;
+  
+  navToggle.innerHTML = hamburgerIcon + closeIcon;
+  
+  // Find the navigation element
+  const nav = document.querySelector('nav');
+  
+  // Only proceed if we found the nav element
+  if (nav) {
+    // Insert the toggle button in the nav
+    nav.insertBefore(navToggle, nav.firstChild);
+    
+    // Get the menu and icons
+    const menu = nav.querySelector('ul');
+    const menuIcon = navToggle.querySelector('.menu-icon');
+    const closeIcon = navToggle.querySelector('.close-icon');
+    
+    // Toggle function
+    function toggleMenu() {
+      const isOpen = menu.classList.toggle('open');
+      document.body.classList.toggle('menu-open', isOpen);
+      
+      // Toggle icon visibility
+      menuIcon.style.display = isOpen ? 'none' : 'block';
+      closeIcon.style.display = isOpen ? 'block' : 'none';
+    }
+    
+    // Add click event to toggle button
+    navToggle.addEventListener('click', toggleMenu);
+    
+    // Close menu when a nav link is clicked
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (menu.classList.contains('open')) {
+          toggleMenu();
+        }
+      });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (menu.classList.contains('open') && 
+          !menu.contains(event.target) && 
+          event.target !== navToggle && 
+          !navToggle.contains(event.target)) {
+        toggleMenu();
+      }
+    });
+  }
 }

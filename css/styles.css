@@ -378,3 +378,84 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Mobile Navigation Styles */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1000;
+}
+
+.navbar-toggle svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--text-color);
+}
+
+.navbar-toggle:focus {
+  outline: none;
+}
+
+/* Default navigation (desktop) */
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+  nav {
+    position: relative;
+    margin: 1rem 0;
+  }
+  
+  .navbar-toggle {
+    display: block;
+  }
+  
+  nav ul {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-color);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 900;
+    
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+  }
+  
+  /* When menu is open */
+  nav ul.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  
+  nav a {
+    font-size: 1.2rem; /* Larger touch targets */
+  }
+  
+  /* Adjust body when menu is open to prevent scrolling */
+  body.menu-open {
+    overflow: hidden;
+  }
+}
