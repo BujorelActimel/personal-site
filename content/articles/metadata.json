@@ -1,0 +1,16 @@
+[
+    {
+      "id": "1",
+      "title": "Building a Pseudocode Interpreter for Computer Science Education",
+      "date": "March 10, 2025",
+      "description": "Bridging the gap between algorithm concepts and code implementation for students.",
+      "file": "article1.md"
+    },
+    {
+      "id": "2",
+      "title": "Terminal-Based Web Browsing: Going Back to Basics",
+      "date": "February 15, 2025",
+      "description": "Exploring lightweight, distraction-free web browsing in the terminal.",
+      "file": "article2.md"
+    }
+]

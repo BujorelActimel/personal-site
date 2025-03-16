@@ -1,0 +1,27 @@
+[
+    {
+      "id": "0",
+      "title": "info",
+      "file": "info.md"
+    },
+    {
+      "id": "1",
+      "title": "Introduction to Algorithms",
+      "file": "lecture1.md"
+    },
+    {
+      "id": "2",
+      "title": "Time and Space Complexity",
+      "file": "lecture2.md"
+    },
+    {
+      "id": "3",
+      "title": "Arrays and Linked Lists",
+      "file": "lecture3.md"
+    },
+    {
+      "id": "4",
+      "title": "Stacks and Queues",
+      "file": "lecture4.md"
+    }
+]
