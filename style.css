@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+nav {
+    padding: 25px;
+    text-align: center;
+}
+
+nav a {
+    color: #7ba3d1;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+nav a:hover {
+    color: #9bc2e8;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 30px;
+}
+
+/* Home page styles */
+.home-content {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.home-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    color: #7ba3d1;
+}
+
+.home-content .subtitle {
+    font-size: 1.1rem;
+    color: #8b949e;
+    margin-bottom: 40px;
+}
+
+.home-content .email {
+    font-size: 0.95rem;
+    color: #c9d1d9;
+}
+
+.home-content .email a {
+    color: #7ba3d1;
+    text-decoration: none;
+}
+
+.home-content .email a:hover {
+    text-decoration: underline;
+}
+
+/* Page titles */
+h1.page-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #7ba3d1;
+    text-align: center;
+}
+
+/* List styles for blog and resources */
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.item-card {
+    background: #161b22;
+    padding: 25px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.item-card:hover {
+    border-color: #7ba3d1;
+}
+
+.item-card h2 {
+    font-size: 1.2rem;
+    color: #7ba3d1;
+    margin-bottom: 8px;
+}
+
+.item-meta {
+    font-size: 0.8rem;
+    color: #8b949e;
+    margin-bottom: 12px;
+}
+
+.item-excerpt {
+    font-size: 0.9rem;
+    color: #c9d1d9;
+}
+
+/* Back button */
+.back-button {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: #7ba3d1;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+/* Markdown content styles */
+.content {
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.content p {
+    margin-bottom: 20px;
+}
+
+.content h1, .content h2 {
+    color: #7ba3d1;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.content h1 {
+    font-size: 1.8rem;
+}
+
+.content h2 {
+    font-size: 1.4rem;
+}
+
+.content h3 {
+    color: #8b949e;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.content ul, .content ol {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.content li {
+    margin-bottom: 8px;
+}
+
+.content a {
+    color: #7ba3d1;
+    text-decoration: none;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+.content code {
+    background: #161b22;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.content pre {
+    background: #161b22;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.content pre code {
+    background: none;
+    padding: 0;
+}
+
+.content blockquote {
+    border-left: 3px solid #7ba3d1;
+    padding-left: 15px;
+    margin: 20px 0;
+    color: #8b949e;
+}
+
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.content table th,
+.content table td {
+    padding: 10px;
+    border: 1px solid #30363d;
+    text-align: left;
+}
+
+.content table th {
+    background: #161b22;
+    color: #7ba3d1;
+}
+
+/* Contact page styles */
+.contact-content {
+    text-align: center;
+}
+
+.contact-content p {
+    margin-bottom: 30px;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #7ba3d1;
+    transition: color 0.2s;
+}
+
+.contact-link:hover {
+    color: #9bc2e8;
+}
+
+.contact-link i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.contact-link span {
+    font-size: 0.85rem;
+}
