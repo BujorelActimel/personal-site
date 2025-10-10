@@ -72,9 +72,73 @@ nav a:hover {
 /* Page titles */
 h1.page-title {
     font-size: 2rem;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     color: #7ba3d1;
     text-align: center;
+}
+
+/* Filters */
+.filters {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: #161b22;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-label {
+    font-size: 0.85rem;
+    color: #8b949e;
+    margin-bottom: 10px;
+}
+
+.tag-filters,
+.time-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tag-filter,
+.time-filter {
+    background: #0d1117;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tag-filter:hover,
+.time-filter:hover {
+    border-color: #7ba3d1;
+    color: #7ba3d1;
+}
+
+.tag-filter.active,
+.time-filter.active {
+    background: #7ba3d1;
+    color: #0d1117;
+    border-color: #7ba3d1;
+}
+
+.no-results {
+    text-align: center;
+    color: #8b949e;
+    padding: 40px 20px;
+    font-size: 0.9rem;
 }
 
 /* List styles for blog and resources */
@@ -107,6 +171,26 @@ h1.page-title {
     font-size: 0.8rem;
     color: #8b949e;
     margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.item-meta .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.item-meta .tag {
+    background: #0d1117;
+    color: #7ba3d1;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    border: 1px solid #30363d;
 }
 
 .item-excerpt {
@@ -258,4 +342,36 @@ h1.page-title {
 
 .contact-link span {
     font-size: 0.85rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    nav a {
+        margin: 0 10px;
+        font-size: 0.85rem;
+    }
+
+    .filters {
+        padding: 15px;
+    }
+
+    .filter-label {
+        font-size: 0.8rem;
+    }
+
+    .tag-filter,
+    .time-filter {
+        font-size: 0.75rem;
+        padding: 5px 12px;
+    }
+
+    .item-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-links {
+        flex-direction: column;
+        gap: 30px;
+    }
 }
