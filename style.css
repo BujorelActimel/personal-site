@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+html {
+    scrollbar-width: none;
+}
+::-webkit-scrollbar {
+    width: 0px;
+}
+
 body {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 600;
