@@ -7,47 +7,12 @@ const config = {
     // Unified articles section
     articles: [
         {
-            title: "Getting Started with Functional Programming",
-            date: "2025-10-01",
-            tags: ['blog'],
-            excerpt: "Exploring the fundamentals of functional programming and its applications in modern software development.",
-            file: "content/blog/functional-programming.md"
-        },
-        {
-            title: "Understanding Graph Algorithms",
-            date: "2025-09-15",
-            tags: ['blog'],
-            excerpt: "A deep dive into graph traversal algorithms, including BFS and DFS, and their practical applications.",
-            file: "content/blog/graph-algorithms.md"
-        },
-        {
-            title: "Reflections on Learning Computer Science",
-            date: "2025-08-20",
-            tags: ['blog', 'rant'],
-            excerpt: "My journey through computer science education, lessons learned, and advice for aspiring developers.",
-            file: "content/blog/learning-cs.md"
-        },
-        {
-            title: "Data Structures & Algorithms Course",
-            date: "2025-01-10",
-            tags: ['course material'],
-            excerpt: "Complete lecture notes, assignments, and supplementary materials for the Data Structures and Algorithms course.",
-            file: "content/resources/dsa-course.md"
-        },
-        {
-            title: "Python Programming Tutorial",
-            date: "2024-12-05",
+            title: "Online Graph Editor",
+            date: "2025-10-26",
             tags: ['educational tool'],
-            excerpt: "Interactive Python tutorial for beginners covering basics to advanced topics with practical examples.",
-            file: "content/resources/python-tutorial.md"
+            excerpt: "",
+            file: "/content/resources/graph-editor.md"
         },
-        {
-            title: "Algorithm Complexity Cheat Sheet",
-            date: "2024-11-15",
-            tags: ['reference'],
-            excerpt: "Quick reference for time and space complexity of common algorithms and data structures.",
-            file: "content/resources/complexity-cheatsheet.md"
-        }
     ]
 };
 
@@ -197,7 +162,7 @@ function filterArticles() {
 // Format date for display
 function formatDate(dateString) {
     const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'long' };
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
 
