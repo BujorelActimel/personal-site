@@ -10,7 +10,7 @@ const config = {
             title: "Online Graph Editor",
             date: "2025-10-26",
             tags: ['educational tool'],
-            excerpt: "",
+            excerpt: "A tool for visualizing graphs from adjacency matrices and lists, built specifically for high school students learning graph algorithms.",
             file: "/content/resources/graph-editor.md"
         },
     ]
@@ -46,8 +46,53 @@ marked.setOptions({
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
-    loadPage('home');
+    setupRouting();
+    // Load page from URL hash or default to home
+    const hash = window.location.hash.slice(1) || 'home';
+    handleRoute(hash);
 });
+
+// Setup URL routing
+function setupRouting() {
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.slice(1) || 'home';
+        handleRoute(hash);
+    });
+}
+
+// Handle routing
+function handleRoute(hash) {
+    // Check if it's an article route (format: articles/slug or articles/index)
+    if (hash.startsWith('articles/')) {
+        const articleIdentifier = hash.split('/')[1];
+
+        // Try to find article by index or by slug
+        let article;
+        const index = parseInt(articleIdentifier);
+        if (!isNaN(index)) {
+            article = config.articles[index];
+        } else {
+            // Find by slug (derived from title)
+            article = config.articles.find(a => createSlug(a.title) === articleIdentifier);
+        }
+
+        if (article) {
+            loadArticleDirect(article);
+        } else {
+            loadPage('404');
+        }
+    } else {
+        loadPage(hash);
+    }
+}
+
+// Create URL-friendly slug from title
+function createSlug(title) {
+    return title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+}
 
 // Setup navigation
 function setupNavigation() {
@@ -56,7 +101,7 @@ function setupNavigation() {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const page = link.getAttribute('data-page');
-            loadPage(page);
+            window.location.hash = page;
         });
     });
 }
@@ -69,21 +114,55 @@ function loadPage(page) {
     selectedTimeFilter = 'all';
     const app = document.getElementById('app');
 
-    switch(page) {
-        case 'home':
-            app.innerHTML = renderHome();
-            break;
-        case 'about':
-            app.innerHTML = renderAbout();
-            break;
-        case 'articles':
-            app.innerHTML = renderArticlesList();
-            setupArticlesListeners();
-            break;
-        case 'contact':
-            app.innerHTML = renderContact();
-            break;
+    // Update active nav indicator
+    document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-page') === page) {
+            link.classList.add('active');
+        }
+    });
+
+    // Update URL hash without triggering hashchange
+    if (window.location.hash.slice(1) !== page) {
+        history.replaceState(null, null, `#${page}`);
     }
+
+    // Add exit animation
+    app.classList.add('page-transition-exit-active');
+
+    setTimeout(() => {
+        app.classList.remove('page-transition-exit-active');
+
+        switch(page) {
+            case 'home':
+                app.innerHTML = renderHome();
+                break;
+            case 'about':
+                app.innerHTML = renderAbout();
+                break;
+            case 'articles':
+                app.innerHTML = renderArticlesList();
+                setupArticlesListeners();
+                break;
+            case 'contact':
+                app.innerHTML = renderContact();
+                break;
+            default:
+                app.innerHTML = render404();
+                setup404Listeners();
+                break;
+        }
+
+        // Add enter animation
+        app.classList.add('page-transition-enter');
+        requestAnimationFrame(() => {
+            app.classList.remove('page-transition-enter');
+            app.classList.add('page-transition-enter-active');
+            setTimeout(() => {
+                app.classList.remove('page-transition-enter-active');
+            }, 80);
+        });
+    }, 60);
 }
 
 // Render home page
@@ -173,31 +252,24 @@ function renderArticlesList() {
 
     let html = '<h1 class="page-title">Articles</h1>';
 
-    // Filters section
+    // Compact filters section
     html += '<div class="filters">';
 
-    // Tag filters
-    html += '<div class="filter-group"><div class="filter-label">Tags:</div><div class="tag-filters">';
-    allTags.forEach(tag => {
-        const isActive = selectedTags.includes(tag);
-        html += `<button class="tag-filter ${isActive ? 'active' : ''}" data-tag="${tag}">${tag}</button>`;
-    });
-    html += '</div></div>';
+    // Search/filter toggle
+    html += '<div class="filter-controls">';
+    html += '<input type="text" class="search-input" placeholder="Search articles..." id="article-search">';
 
-    // Time filters
-    html += '<div class="filter-group"><div class="filter-label">Time:</div><div class="time-filters">';
-    const timeOptions = [
-        { value: 'all', label: 'All time' },
-        { value: 'year', label: 'Past year' },
-        { value: '6months', label: 'Past 6 months' },
-        { value: '3months', label: 'Past 3 months' }
-    ];
-    timeOptions.forEach(option => {
-        const isActive = selectedTimeFilter === option.value;
-        html += `<button class="time-filter ${isActive ? 'active' : ''}" data-time="${option.value}">${option.label}</button>`;
-    });
-    html += '</div></div>';
+    // Only show tag filters if there are tags
+    if (allTags.length > 0) {
+        html += '<div class="filter-tags">';
+        allTags.forEach(tag => {
+            const isActive = selectedTags.includes(tag);
+            html += `<button class="tag-filter ${isActive ? 'active' : ''}" data-tag="${tag}">${tag}</button>`;
+        });
+        html += '</div>';
+    }
 
+    html += '</div>'; // End filter-controls
     html += '</div>'; // End filters
 
     // Articles list
@@ -206,7 +278,7 @@ function renderArticlesList() {
     if (filteredArticles.length === 0) {
         html += '<p class="no-results">No articles found matching the selected filters.</p>';
     } else {
-        filteredArticles.forEach((article, index) => {
+        filteredArticles.forEach((article) => {
             const originalIndex = config.articles.indexOf(article);
             html += `
                 <div class="item-card" data-index="${originalIndex}">
@@ -227,6 +299,24 @@ function renderArticlesList() {
 
 // Setup articles listeners
 function setupArticlesListeners() {
+    // Search input listener
+    const searchInput = document.getElementById('article-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.item-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h2').textContent.toLowerCase();
+                const excerpt = card.querySelector('.item-excerpt').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+
+                const matches = title.includes(searchTerm) || excerpt.includes(searchTerm) || tags.includes(searchTerm);
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+    }
+
     // Tag filter listeners
     const tagFilters = document.querySelectorAll('.tag-filter');
     tagFilters.forEach(button => {
@@ -237,15 +327,6 @@ function setupArticlesListeners() {
             } else {
                 selectedTags.push(tag);
             }
-            refreshArticlesList();
-        });
-    });
-
-    // Time filter listeners
-    const timeFilters = document.querySelectorAll('.time-filter');
-    timeFilters.forEach(button => {
-        button.addEventListener('click', () => {
-            selectedTimeFilter = button.getAttribute('data-time');
             refreshArticlesList();
         });
     });
@@ -267,36 +348,69 @@ function refreshArticlesList() {
     setupArticlesListeners();
 }
 
-// Load article
+// Load article from article list (no URL update to prevent loop)
 function loadArticle(article) {
+    // Update URL with article slug
+    const slug = createSlug(article.title);
+    window.location.hash = `articles/${slug}`;
+}
+
+// Load article directly (with page transition)
+function loadArticleDirect(article) {
     currentView = 'detail';
     const app = document.getElementById('app');
-    app.innerHTML = `
-        <a class="back-button">← Back to Articles</a>
-        <div class="content" id="markdown-content">Loading...</div>
-    `;
 
-    document.querySelector('.back-button').addEventListener('click', () => {
-        loadPage('articles');
+    // Update active nav indicator
+    document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-page') === 'articles') {
+            link.classList.add('active');
+        }
     });
 
-    fetch(article.file)
-        .then(response => {
-            if (!response.ok) throw new Error('Article not found');
-            return response.text();
-        })
-        .then(markdown => {
-            document.getElementById('markdown-content').innerHTML = marked.parse(markdown);
-            // Apply syntax highlighting to all code blocks
-            document.querySelectorAll('pre code').forEach((block) => {
-                hljs.highlightElement(block);
-            });
-        })
-        .catch(error => {
-            document.getElementById('markdown-content').innerHTML = `
-                <p>Could not load article. Make sure the file exists at: ${article.file}</p>
-            `;
+    // Add exit animation
+    app.classList.add('page-transition-exit-active');
+
+    setTimeout(() => {
+        app.classList.remove('page-transition-exit-active');
+
+        app.innerHTML = `
+            <a class="back-button">← Back to Articles</a>
+            <div class="content" id="markdown-content">Loading...</div>
+        `;
+
+        document.querySelector('.back-button').addEventListener('click', () => {
+            window.location.hash = 'articles';
         });
+
+        fetch(article.file)
+            .then(response => {
+                if (!response.ok) throw new Error('Article not found');
+                return response.text();
+            })
+            .then(markdown => {
+                document.getElementById('markdown-content').innerHTML = marked.parse(markdown);
+                // Apply syntax highlighting to all code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            })
+            .catch(() => {
+                document.getElementById('markdown-content').innerHTML = `
+                    <p>Could not load article. Make sure the file exists at: ${article.file}</p>
+                `;
+            });
+
+        // Add enter animation
+        app.classList.add('page-transition-enter');
+        requestAnimationFrame(() => {
+            app.classList.remove('page-transition-enter');
+            app.classList.add('page-transition-enter-active');
+            setTimeout(() => {
+                app.classList.remove('page-transition-enter-active');
+            }, 80);
+        });
+    }, 60);
 }
 
 // Render contact page
@@ -305,7 +419,7 @@ function renderContact() {
         <h1 class="page-title">Get in Touch</h1>
         <div class="contact-content">
             <p>Feel free to reach out if you have any questions or just want to connect.</p>
-            
+
             <div class="contact-links">
                 <a href="mailto:${config.email}" class="contact-link">
                     <i class="fa-solid fa-envelope"></i>
@@ -322,4 +436,65 @@ function renderContact() {
             </div>
         </div>
     `;
+}
+
+// Render 404 page with ASCII animation
+function render404() {
+    return `
+        <div class="error-404">
+            <div class="ascii-animation">
+                <pre id="ascii-art"></pre>
+            </div>
+
+            <a class="back-home-link">← Back to Home</a>
+        </div>
+    `;
+}
+
+// Setup 404 page listeners
+function setup404Listeners() {
+    const backHomeLink = document.querySelector('.back-home-link');
+    if (backHomeLink) {
+        backHomeLink.addEventListener('click', () => {
+            window.location.hash = 'home';
+        });
+    }
+
+    initAsciiAnimation();
+}
+
+// ASCII Animation - Glitching "404 NOT FOUND"
+function initAsciiAnimation() {
+    const asciiEl = document.getElementById('ascii-art');
+    if (!asciiEl) return;
+
+    const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+    const targetText = '404 NOT FOUND';
+    let frame = 0;
+
+    function glitchText() {
+        let result = '';
+        for (let i = 0; i < targetText.length; i++) {
+            if (Math.random() > 0.85) {
+                result += chars[Math.floor(Math.random() * chars.length)];
+            } else {
+                result += targetText[i];
+            }
+        }
+        return result;
+    }
+
+    function animate() {
+        frame++;
+
+        // Every few frames, show the correct text briefly
+        if (frame % 15 === 0) {
+            asciiEl.textContent = targetText;
+        } else if (frame % 3 === 0) {
+            asciiEl.textContent = glitchText();
+        }
+    }
+
+    // Start animation
+    setInterval(animate, 80);
 }

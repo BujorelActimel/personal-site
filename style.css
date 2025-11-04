@@ -38,10 +38,48 @@ nav a:hover {
     color: #9bc2e8;
 }
 
+nav a.active {
+    color: #9bc2e8;
+    position: relative;
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #7ba3d1;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 60px 30px;
+}
+
+/* Page transitions */
+.page-transition-enter {
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.page-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.08s ease-out, transform 0.08s ease-out;
+}
+
+.page-transition-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-transition-exit-active {
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.06s ease-in, transform 0.06s ease-in;
 }
 
 /* Home page styles */
@@ -86,56 +124,62 @@ h1.page-title {
 
 /* Filters */
 .filters {
-    margin-bottom: 40px;
-    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 14px;
     background: #161b22;
-    border-radius: 6px;
     border: 1px solid #30363d;
-}
-
-.filter-group {
-    margin-bottom: 20px;
-}
-
-.filter-group:last-child {
-    margin-bottom: 0;
-}
-
-.filter-label {
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
     font-size: 0.85rem;
-    color: #8b949e;
-    margin-bottom: 10px;
+    transition: border-color 0.2s;
 }
 
-.tag-filters,
-.time-filters {
+.search-input:focus {
+    outline: none;
+    border-color: #7ba3d1;
+}
+
+.search-input::placeholder {
+    color: #8b949e;
+}
+
+.filter-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
-.tag-filter,
-.time-filter {
-    background: #0d1117;
+.tag-filter {
+    background: #161b22;
     color: #c9d1d9;
     border: 1px solid #30363d;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 4px;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.tag-filter:hover,
-.time-filter:hover {
+.tag-filter:hover {
     border-color: #7ba3d1;
     color: #7ba3d1;
 }
 
-.tag-filter.active,
-.time-filter.active {
+.tag-filter.active {
     background: #7ba3d1;
     color: #0d1117;
     border-color: #7ba3d1;
@@ -351,6 +395,36 @@ h1.page-title {
     font-size: 0.85rem;
 }
 
+/* 404 Error Page */
+.error-404 {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.ascii-animation {
+    margin-bottom: 60px;
+}
+
+#ascii-art {
+    font-size: 3rem;
+    color: #7ba3d1;
+    letter-spacing: 0.2em;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.back-home-link {
+    display: inline-block;
+    color: #7ba3d1;
+    text-decoration: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.back-home-link:hover {
+    text-decoration: underline;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
     nav a {
@@ -358,18 +432,13 @@ h1.page-title {
         font-size: 0.85rem;
     }
 
-    .filters {
-        padding: 15px;
-    }
-
-    .filter-label {
+    .search-input {
         font-size: 0.8rem;
     }
 
-    .tag-filter,
-    .time-filter {
-        font-size: 0.75rem;
-        padding: 5px 12px;
+    .tag-filter {
+        font-size: 0.7rem;
+        padding: 4px 10px;
     }
 
     .item-meta {
@@ -380,5 +449,9 @@ h1.page-title {
     .contact-links {
         flex-direction: column;
         gap: 30px;
+    }
+
+    #ascii-art {
+        font-size: 1.8rem;
     }
 }
