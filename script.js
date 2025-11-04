@@ -9,7 +9,7 @@ const config = {
         {
             title: "Online Graph Editor",
             date: "2025-10-26",
-            tags: ['educational tool'],
+            tags: ['edu', 'tooling', 'graphs'],
             excerpt: "A tool for visualizing graphs from adjacency matrices and lists, built specifically for high school students learning graph algorithms.",
             file: "/content/resources/graph-editor.md"
         },

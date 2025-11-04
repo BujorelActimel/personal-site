@@ -1,7 +1,7 @@
 # Online Graph Editor
 
 When working with graphs it's kind of hard to think about them in terms
-of matrixes or adjacency lists, and rather in a more graphical way, so
+of data structures, but rather in a more graphical way, so
 a tool that draws graphs from these representations would be useful. There is <a href=https://csacademy.com/app/graph_editor>this</a>
 website that does that, but I find it very frustrating to work with,
 and it is missing a feature that I need when working specifically with high school students.
